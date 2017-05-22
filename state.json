@@ -1,0 +1,26 @@
+{
+    "time": {
+        "hour": 12,
+        "minute": 0,
+        "year": 1,
+        "season": 3,
+        "day": 29
+    },
+    "character": {
+        "name": ""
+    },
+    "people": {
+        "abigail": {
+            "name": "Abigail",
+            "gender": "femail",
+            "has_met": false,
+            "relationship": 0,
+            "location": "farm"
+        }
+    },
+    "locations": {
+        "market": {
+            "name": "Market"
+        }
+    }
+}
