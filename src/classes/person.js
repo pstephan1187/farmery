@@ -1,8 +1,8 @@
 export default class Person {
-    constructor(person_key){
+    constructor(state){
         window.console.log('creating person...');
 
-        this.state = (require("../state.js")).people[person_key];
+        this.state = state;
         this.bus = (require("../event-bus.js"));
     }
 

@@ -1,14 +1,14 @@
 export default class Location {
-    constructor(location_key){
+    constructor(state){
         window.console.log('creating location...');
 
-        this.id = location_key;
-        this.state = (require("../state.js")).locations[location_key];
+        // this.id = location_key;
+        this.state = state;
         this.bus = (require("../event-bus.js"));
     }
 
     init(){
-        console.log('initializing location: ' + this.state.name + '...');
+        console.log('initializing location: ' + this.getName() + '...');
     }
 
     getName(){

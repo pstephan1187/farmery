@@ -1,27 +1,18 @@
 import Character from "./character.js";
 import Clock from "../clock.js";
-
-import Abigail from "./people/abigail.js";
-
-import Market from "./locations/market.js";
-import Farm from "./locations/farm.js";
+import People from "../stores/people.js";
+import Locations from "../stores/locations.js";
 
 export default class Game {
     constructor(){
         console.log('creating game...');
         this.state = require("../state.js");
 
-        console.log(this.state);
         this.time = this.state.time;
         this.character = new Character();
-        this.people = {};
-        this.locations = {};
+        this.people = new People();
+        this.locations = new Locations();
         this.clock = new Clock();
-
-        this.people.abigail = new Abigail('abigail');
-
-        this.locations.market = new Market('market');
-        this.locations.farm = new Farm('farm');
         this.ui = require('../ui.js');
     }
 
@@ -29,9 +20,8 @@ export default class Game {
         console.log('initializing.');
         this.ui.init();
         this.character.init();
-        for(var i in this.people){
-            this.people[i].init();
-        }
+        this.people.init();
+        this.locations.init();
         this.clock.init();
     }
 }
