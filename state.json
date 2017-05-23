@@ -21,6 +21,9 @@
     "locations": {
         "market": {
             "name": "Market"
+        },
+        "farm": {
+            "name": "Farm"
         }
     }
 }
