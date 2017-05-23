@@ -35,7 +35,7 @@ export default class Clock {
 
         this.bus.emit('time', this);
 
-        console.log(this.getFormattedDate() + ' ' +this.getFormattedTime());
+        // console.log(this.getFormattedDate() + ' ' +this.getFormattedTime());
     }
 
     getFormattedDate(){

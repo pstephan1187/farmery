@@ -1,4 +1,3 @@
-// import state from "../state.js";
 import Character from "./character.js";
 import Clock from "../clock.js";
 
@@ -23,20 +22,16 @@ export default class Game {
 
         this.locations.market = new Market('market');
         this.locations.farm = new Farm('farm');
+        this.ui = require('../ui.js');
     }
 
     init(){
         console.log('initializing.');
-
-        // create character
+        this.ui.init();
         this.character.init();
-
-        // create NPCs
         for(var i in this.people){
             this.people[i].init();
         }
-
-        // start the clock
         this.clock.init();
     }
 }
