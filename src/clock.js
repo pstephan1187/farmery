@@ -1,8 +1,8 @@
-export default class Clock {
+const Bus = require("./event-bus.js");
+
+class Clock {
     constructor(){
         this.state = (require("./state.js")).time;
-        this.bus = (require("./event-bus.js"));
-        console.log(this.state);
     }
 
     init(){
@@ -33,7 +33,7 @@ export default class Clock {
             this.state.season = 0;
         }
 
-        this.bus.emit('time', this);
+        Bus.$emit('time', this);
 
         // console.log(this.getFormattedDate() + ' ' +this.getFormattedTime());
     }
@@ -83,3 +83,5 @@ export default class Clock {
         return hour + ':' + minute + ' ' + meridiem;
     }
 }
+
+module.exports = (new Clock);

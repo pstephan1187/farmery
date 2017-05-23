@@ -1,8 +1,9 @@
 import Person from "../person.js";
+const Bus = require("../../event-bus.js");
 
 export default class Abigail extends Person{
     defineMovements(){
-        this.bus.on('time', function(time){
+        Bus.$on('time', function(time){
             if(time.state.hour === 12 && time.state.minute === 2){
                 this.goTo('market');
             }

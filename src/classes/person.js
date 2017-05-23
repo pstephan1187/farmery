@@ -3,7 +3,6 @@ export default class Person {
         window.console.log('creating person...');
 
         this.state = state;
-        this.bus = (require("../event-bus.js"));
     }
 
     init(){

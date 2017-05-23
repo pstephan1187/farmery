@@ -1,5 +1,4 @@
 import Character from "./character.js";
-import Clock from "../clock.js";
 import People from "../stores/people.js";
 import Locations from "../stores/locations.js";
 
@@ -12,7 +11,7 @@ export default class Game {
         this.character = new Character();
         this.people = new People();
         this.locations = new Locations();
-        this.clock = new Clock();
+        this.clock = require('../clock.js');
         this.ui = require('../ui.js');
     }
 
