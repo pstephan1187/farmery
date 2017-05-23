@@ -1,4 +1,3 @@
-// import state from "./state.js";
 import Game from "./classes/game.js";
 
 const state = require("./state.js");

@@ -1,17 +1,25 @@
+const Vue = require("vue");
+const Bus = require("./event-bus.js");
+
 class UI {
     constructor(){
-        this.bus = (require("./event-bus.js"));
+        this.state = (require("./state.js"));
+        this.clock = (require("./clock.js"));
     }
 
     init(){
-        this.updateTime();
-    }
-
-    updateTime(){
-        this.bus.on('time', function(time){
-            const el = document.getElementById('datetime');
-            el.textContent = time.getFormattedDate() + ' ' +time.getFormattedTime()
-        }.bind(this));
+        this.vue = new Vue({
+            el: '#ui',
+            data: {
+                time: '',
+                state: this.state,
+            },
+            created: function(){
+                Bus.$on('time', function(clock){
+                    this.time = clock.getFormattedDateTime();
+                }.bind(this));
+            }
+        });
     }
 }
 

@@ -82,6 +82,10 @@ class Clock {
 
         return hour + ':' + minute + ' ' + meridiem;
     }
+
+    getFormattedDateTime(){
+        return this.getFormattedDate() + ' ' + this.getFormattedTime();
+    }
 }
 
 module.exports = (new Clock);
