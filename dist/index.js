@@ -70,6 +70,17 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+// import state from "../state.json";
+var state = __webpack_require__(2);
+
+console.log(state);
+
+module.exports = state;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // class Bus {
 //     constructor(){
 //         this.events = {};
@@ -96,21 +107,10 @@
 // }
 //
 // const bus = new Bus();
-var Vue = __webpack_require__(16);
+var Vue = __webpack_require__(5);
 
 module.exports = new Vue();
 // module.exports = new Bus();
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// import state from "../state.json";
-var state = __webpack_require__(2);
-
-console.log(state);
-
-module.exports = state;
 
 /***/ }),
 /* 2 */
@@ -163,7 +163,7 @@ var Location = function () {
 
         // this.id = location_key;
         this.state = state;
-        this.bus = __webpack_require__(0);
+        this.bus = __webpack_require__(1);
     }
 
     _createClass(Location, [{
@@ -185,327 +185,38 @@ var Location = function () {
 
 /***/ }),
 /* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_game_js__ = __webpack_require__(7);
-
-
-var state = __webpack_require__(1);
-
-var game = new __WEBPACK_IMPORTED_MODULE_0__classes_game_js__["a" /* default */]();
-
-game.init();
-
-window.game = game;
-window.character = game.character;
-window.state = state;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Character = function () {
-    function Character() {
-        _classCallCheck(this, Character);
-
-        window.console.log('creating character...');
-
-        this.character = __webpack_require__(1).character;
-    }
-
-    _createClass(Character, [{
-        key: "init",
-        value: function init() {
-            if (!this.character.name) {
-                this.character.name = prompt("what is your name?");
-            }
-        }
-    }, {
-        key: "talkTo",
-        value: function talkTo(person) {
-            person.converse(this);
-        }
-    }, {
-        key: "getName",
-        value: function getName() {
-            return this.character.name;
-        }
-    }]);
-
-    return Character;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (Character);
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__character_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_people_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_locations_js__ = __webpack_require__(13);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-
-
-
-
-var Game = function () {
-    function Game() {
-        _classCallCheck(this, Game);
-
-        console.log('creating game...');
-        this.state = __webpack_require__(1);
-
-        this.time = this.state.time;
-        this.character = new __WEBPACK_IMPORTED_MODULE_0__character_js__["a" /* default */]();
-        this.people = new __WEBPACK_IMPORTED_MODULE_1__stores_people_js__["a" /* default */]();
-        this.locations = new __WEBPACK_IMPORTED_MODULE_2__stores_locations_js__["a" /* default */]();
-        this.clock = __webpack_require__(12);
-        this.ui = __webpack_require__(15);
-    }
-
-    _createClass(Game, [{
-        key: "init",
-        value: function init() {
-            console.log('initializing.');
-            this.ui.init();
-            this.character.init();
-            this.people.init();
-            this.locations.init();
-            this.clock.init();
-        }
-    }]);
-
-    return Game;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (Game);
-
-/***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__location_js__ = __webpack_require__(3);
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-var Farm = function (_Location) {
-  _inherits(Farm, _Location);
-
-  function Farm() {
-    _classCallCheck(this, Farm);
-
-    return _possibleConstructorReturn(this, (Farm.__proto__ || Object.getPrototypeOf(Farm)).apply(this, arguments));
-  }
-
-  return Farm;
-}(__WEBPACK_IMPORTED_MODULE_0__location_js__["a" /* default */]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Farm);
-
-/***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__location_js__ = __webpack_require__(3);
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-var Market = function (_Location) {
-  _inherits(Market, _Location);
-
-  function Market() {
-    _classCallCheck(this, Market);
-
-    return _possibleConstructorReturn(this, (Market.__proto__ || Object.getPrototypeOf(Market)).apply(this, arguments));
-  }
-
-  return Market;
-}(__WEBPACK_IMPORTED_MODULE_0__location_js__["a" /* default */]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Market);
-
-/***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__person_js__ = __webpack_require__(11);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-var Bus = __webpack_require__(0);
-
-var Abigail = function (_Person) {
-    _inherits(Abigail, _Person);
-
-    function Abigail() {
-        _classCallCheck(this, Abigail);
-
-        return _possibleConstructorReturn(this, (Abigail.__proto__ || Object.getPrototypeOf(Abigail)).apply(this, arguments));
-    }
-
-    _createClass(Abigail, [{
-        key: "defineMovements",
-        value: function defineMovements() {
-            Bus.$on('time', function (time) {
-                if (time.state.hour === 12 && time.state.minute === 2) {
-                    this.goTo('market');
-                }
-            }.bind(this));
-        }
-    }, {
-        key: "converse",
-        value: function converse(character) {
-            if (!this.state.has_met) {
-                console.log('Hello! What is your name?');
-                console.log(character.getName() + '? That\'s a nice name. I am ' + this.state.name + '. It\'s a pleasure to meet you!');
-
-                this.state.has_met = true;
-                this.state.relationship++;
-
-                console.log(this);
-                return;
-            }
-
-            if (this.state.relationship < 10) {
-                console.log('Hello, ' + character.getName() + '.');
-
-                this.state.relationship++;
-
-                console.log(this);
-                return;
-            }
-
-            if (this.state.relationship >= 10) {
-                console.log('Hi, ' + character.getName() + '! How are you doing?');
-
-                this.state.relationship++;
-
-                console.log(this);
-                return;
-            }
-        }
-    }]);
-
-    return Abigail;
-}(__WEBPACK_IMPORTED_MODULE_0__person_js__["a" /* default */]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Abigail);
-
-/***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Person = function () {
-    function Person(state) {
-        _classCallCheck(this, Person);
-
-        window.console.log('creating person...');
-
-        this.state = state;
-    }
-
-    _createClass(Person, [{
-        key: 'init',
-        value: function init() {
-            console.log('initializing person: ' + this.state.name + '...');
-            this.defineMovements();
-        }
-    }, {
-        key: 'getName',
-        value: function getName() {
-            return this.state.name;
-        }
-
-        // TODO: use location objects
-
-    }, {
-        key: 'goTo',
-        value: function goTo(location_key) {
-            console.log(this.getName() + ' is going to ' + location_key);
-            this.state.location = location_key;
-        }
-    }, {
-        key: 'getLocation',
-        value: function getLocation() {
-            // get the location object here
-        }
-    }, {
-        key: 'converse',
-        value: function converse(character) {}
-    }]);
-
-    return Person;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (Person);
-
-/***/ }),
-/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Bus = __webpack_require__(0);
+var Bus = __webpack_require__(1);
 
 var Clock = function () {
     function Clock() {
         _classCallCheck(this, Clock);
 
-        this.state = __webpack_require__(1).time;
+        this.state = __webpack_require__(0).time;
+        this.paused = false;
     }
 
     _createClass(Clock, [{
         key: "init",
         value: function init() {
             this.interval = setInterval(this.tick.bind(this), 10);
+
+            Bus.$on('time.toggle', function () {
+                this.paused = !this.paused;
+            }.bind(this));
         }
     }, {
         key: "tick",
         value: function tick() {
+            if (this.paused) {
+                return;
+            }
+
             this.state.minute++;
 
             // increment hour
@@ -593,121 +304,7 @@ var Clock = function () {
 module.exports = new Clock();
 
 /***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_locations_market_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__classes_locations_farm_js__ = __webpack_require__(8);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-
-
-
-var state = __webpack_require__(2);
-
-var Locations = function () {
-	function Locations() {
-		_classCallCheck(this, Locations);
-
-		this.market = new __WEBPACK_IMPORTED_MODULE_0__classes_locations_market_js__["a" /* default */](state.locations.market);
-		this.farm = new __WEBPACK_IMPORTED_MODULE_1__classes_locations_farm_js__["a" /* default */](state.locations.farm);
-	}
-
-	_createClass(Locations, [{
-		key: "init",
-		value: function init() {
-			this.market.init();
-			this.farm.init();
-		}
-	}]);
-
-	return Locations;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (Locations);
-
-/***/ }),
-/* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_people_abigail_js__ = __webpack_require__(10);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-
-
-var state = __webpack_require__(2);
-
-var People = function () {
-	function People() {
-		_classCallCheck(this, People);
-
-		this.abigail = new __WEBPACK_IMPORTED_MODULE_0__classes_people_abigail_js__["a" /* default */](state.people.abigail);
-	}
-
-	_createClass(People, [{
-		key: "init",
-		value: function init() {
-			this.abigail.init();
-		}
-	}]);
-
-	return People;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (People);
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Vue = __webpack_require__(16);
-var Bus = __webpack_require__(0);
-
-var UI = function () {
-    function UI() {
-        _classCallCheck(this, UI);
-
-        this.state = __webpack_require__(1);
-        this.clock = __webpack_require__(12);
-    }
-
-    _createClass(UI, [{
-        key: "init",
-        value: function init() {
-            this.vue = new Vue({
-                el: '#ui',
-                data: {
-                    time: '',
-                    state: this.state
-                },
-                created: function created() {
-                    Bus.$on('time', function (clock) {
-                        this.time = clock.getFormattedDateTime();
-                    }.bind(this));
-                }
-            });
-        }
-    }]);
-
-    return UI;
-}();
-
-var ui = new UI();
-
-module.exports = ui;
-
-/***/ }),
-/* 16 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10405,6 +10002,413 @@ module.exports = Vue$3;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_game_js__ = __webpack_require__(9);
+
+
+var state = __webpack_require__(0);
+
+var game = new __WEBPACK_IMPORTED_MODULE_0__classes_game_js__["a" /* default */]();
+
+game.init();
+
+window.game = game;
+window.character = game.character;
+window.state = state;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Character = function () {
+    function Character() {
+        _classCallCheck(this, Character);
+
+        window.console.log('creating character...');
+
+        this.character = __webpack_require__(0).character;
+    }
+
+    _createClass(Character, [{
+        key: "init",
+        value: function init() {
+            if (!this.character.name) {
+                this.character.name = prompt("what is your name?");
+            }
+        }
+    }, {
+        key: "talkTo",
+        value: function talkTo(person) {
+            person.converse(this);
+        }
+    }, {
+        key: "getName",
+        value: function getName() {
+            return this.character.name;
+        }
+    }]);
+
+    return Character;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Character);
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__character_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_people_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_locations_js__ = __webpack_require__(14);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+
+
+var Game = function () {
+    function Game() {
+        _classCallCheck(this, Game);
+
+        console.log('creating game...');
+        this.state = __webpack_require__(0);
+
+        this.time = this.state.time;
+        this.character = new __WEBPACK_IMPORTED_MODULE_0__character_js__["a" /* default */]();
+        this.people = new __WEBPACK_IMPORTED_MODULE_1__stores_people_js__["a" /* default */]();
+        this.locations = new __WEBPACK_IMPORTED_MODULE_2__stores_locations_js__["a" /* default */]();
+        this.clock = __webpack_require__(4);
+        this.ui = __webpack_require__(16);
+    }
+
+    _createClass(Game, [{
+        key: "init",
+        value: function init() {
+            console.log('initializing.');
+            this.ui.init();
+            this.character.init();
+            this.people.init();
+            this.locations.init();
+            this.clock.init();
+        }
+    }]);
+
+    return Game;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Game);
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__location_js__ = __webpack_require__(3);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Farm = function (_Location) {
+  _inherits(Farm, _Location);
+
+  function Farm() {
+    _classCallCheck(this, Farm);
+
+    return _possibleConstructorReturn(this, (Farm.__proto__ || Object.getPrototypeOf(Farm)).apply(this, arguments));
+  }
+
+  return Farm;
+}(__WEBPACK_IMPORTED_MODULE_0__location_js__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Farm);
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__location_js__ = __webpack_require__(3);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Market = function (_Location) {
+  _inherits(Market, _Location);
+
+  function Market() {
+    _classCallCheck(this, Market);
+
+    return _possibleConstructorReturn(this, (Market.__proto__ || Object.getPrototypeOf(Market)).apply(this, arguments));
+  }
+
+  return Market;
+}(__WEBPACK_IMPORTED_MODULE_0__location_js__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Market);
+
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__person_js__ = __webpack_require__(13);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+var Bus = __webpack_require__(1);
+
+var Abigail = function (_Person) {
+    _inherits(Abigail, _Person);
+
+    function Abigail() {
+        _classCallCheck(this, Abigail);
+
+        return _possibleConstructorReturn(this, (Abigail.__proto__ || Object.getPrototypeOf(Abigail)).apply(this, arguments));
+    }
+
+    _createClass(Abigail, [{
+        key: "defineMovements",
+        value: function defineMovements() {
+            Bus.$on('time', function (time) {
+                if (time.state.hour === 12 && time.state.minute === 2) {
+                    this.goTo('market');
+                }
+            }.bind(this));
+        }
+    }, {
+        key: "converse",
+        value: function converse(character) {
+            if (!this.state.has_met) {
+                console.log('Hello! What is your name?');
+                console.log(character.getName() + '? That\'s a nice name. I am ' + this.state.name + '. It\'s a pleasure to meet you!');
+
+                this.state.has_met = true;
+                this.state.relationship++;
+
+                console.log(this);
+                return;
+            }
+
+            if (this.state.relationship < 10) {
+                console.log('Hello, ' + character.getName() + '.');
+
+                this.state.relationship++;
+
+                console.log(this);
+                return;
+            }
+
+            if (this.state.relationship >= 10) {
+                console.log('Hi, ' + character.getName() + '! How are you doing?');
+
+                this.state.relationship++;
+
+                console.log(this);
+                return;
+            }
+        }
+    }]);
+
+    return Abigail;
+}(__WEBPACK_IMPORTED_MODULE_0__person_js__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Abigail);
+
+/***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Person = function () {
+    function Person(state) {
+        _classCallCheck(this, Person);
+
+        window.console.log('creating person...');
+
+        this.state = state;
+    }
+
+    _createClass(Person, [{
+        key: 'init',
+        value: function init() {
+            console.log('initializing person: ' + this.state.name + '...');
+            this.defineMovements();
+        }
+    }, {
+        key: 'getName',
+        value: function getName() {
+            return this.state.name;
+        }
+
+        // TODO: use location objects
+
+    }, {
+        key: 'goTo',
+        value: function goTo(location_key) {
+            console.log(this.getName() + ' is going to ' + location_key);
+            this.state.location = location_key;
+        }
+    }, {
+        key: 'getLocation',
+        value: function getLocation() {
+            // get the location object here
+        }
+    }, {
+        key: 'converse',
+        value: function converse(character) {}
+    }]);
+
+    return Person;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Person);
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_locations_market_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__classes_locations_farm_js__ = __webpack_require__(10);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+
+var state = __webpack_require__(2);
+
+var Locations = function () {
+	function Locations() {
+		_classCallCheck(this, Locations);
+
+		this.market = new __WEBPACK_IMPORTED_MODULE_0__classes_locations_market_js__["a" /* default */](state.locations.market);
+		this.farm = new __WEBPACK_IMPORTED_MODULE_1__classes_locations_farm_js__["a" /* default */](state.locations.farm);
+	}
+
+	_createClass(Locations, [{
+		key: "init",
+		value: function init() {
+			this.market.init();
+			this.farm.init();
+		}
+	}]);
+
+	return Locations;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Locations);
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_people_abigail_js__ = __webpack_require__(12);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var state = __webpack_require__(2);
+
+var People = function () {
+	function People() {
+		_classCallCheck(this, People);
+
+		this.abigail = new __WEBPACK_IMPORTED_MODULE_0__classes_people_abigail_js__["a" /* default */](state.people.abigail);
+	}
+
+	_createClass(People, [{
+		key: "init",
+		value: function init() {
+			this.abigail.init();
+		}
+	}]);
+
+	return People;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (People);
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Vue = __webpack_require__(5);
+
+Vue.component('clock', __webpack_require__(23));
+
+var UI = function () {
+    function UI() {
+        _classCallCheck(this, UI);
+
+        this.state = __webpack_require__(0);
+        this.clock = __webpack_require__(4);
+    }
+
+    _createClass(UI, [{
+        key: 'init',
+        value: function init() {
+            this.vue = new Vue({
+                el: '#ui',
+                data: {
+                    state: this.state
+                }
+            });
+        }
+    }]);
+
+    return UI;
+}();
+
+var ui = new UI();
+
+module.exports = ui;
+
+/***/ }),
 /* 17 */
 /***/ (function(module, exports) {
 
@@ -10435,9 +10439,158 @@ module.exports = g;
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(4);
-module.exports = __webpack_require__(5);
+__webpack_require__(6);
+module.exports = __webpack_require__(7);
 
+
+/***/ }),
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+
+var Bus = __webpack_require__(1);
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+		return {
+			time: '',
+			button: 'Pause'
+		};
+	},
+	methods: {
+		toggleTime: function toggleTime() {
+			this.button = this.button === 'Pause' ? 'Play' : 'Pause';
+			Bus.$emit('time.toggle');
+		}
+	},
+	created: function created() {
+		Bus.$on('time', function (clock) {
+			this.time = clock.getFormattedDateTime();
+		}.bind(this));
+	}
+});
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(24)(
+  /* script */
+  __webpack_require__(22),
+  /* template */
+  __webpack_require__(25),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/charles/Experiments/farmery/src/classes/components/clock.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] clock.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b216b420", Component.options)
+  } else {
+    hotAPI.reload("data-v-b216b420", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+// this module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  scopeId,
+  cssModules
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  // inject cssModules
+  if (cssModules) {
+    var computed = Object.create(options.computed || null)
+    Object.keys(cssModules).forEach(function (key) {
+      var module = cssModules[key]
+      computed[key] = function () { return module }
+    })
+    options.computed = computed
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_vm._v("\n\t" + _vm._s(_vm.time) + "\n\t"), _c('button', {
+    on: {
+      "click": _vm.toggleTime
+    }
+  }, [_vm._v(_vm._s(_vm.button))])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-b216b420", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

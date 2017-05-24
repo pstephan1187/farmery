@@ -3,13 +3,22 @@ const Bus = require("./event-bus.js");
 class Clock {
     constructor(){
         this.state = (require("./state.js")).time;
+        this.paused = false;
     }
 
     init(){
         this.interval = setInterval(this.tick.bind(this), 10);
+
+        Bus.$on('time.toggle', function(){
+            this.paused = !this.paused;
+        }.bind(this));
     }
 
     tick(){
+        if(this.paused){
+            return;
+        }
+        
         this.state.minute++;
 
         // increment hour

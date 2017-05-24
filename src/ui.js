@@ -1,5 +1,6 @@
 const Vue = require("vue");
-const Bus = require("./event-bus.js");
+
+Vue.component('clock', require('./classes/components/clock.vue'));
 
 class UI {
     constructor(){
@@ -11,13 +12,7 @@ class UI {
         this.vue = new Vue({
             el: '#ui',
             data: {
-                time: '',
                 state: this.state,
-            },
-            created: function(){
-                Bus.$on('time', function(clock){
-                    this.time = clock.getFormattedDateTime();
-                }.bind(this));
             }
         });
     }
