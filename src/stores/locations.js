@@ -3,7 +3,7 @@ import Farm from "../classes/locations/farm.js";
 
 const state = require("../../state.json");
 
-export default class Locations {
+class Locations {
 	constructor(){
 		this.market = new Market(state.locations.market);
 		this.farm = new Farm(state.locations.farm);
@@ -14,3 +14,5 @@ export default class Locations {
 		this.farm.init();
 	}
 }
+
+export default (new Locations());
