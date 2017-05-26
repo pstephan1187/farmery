@@ -1,11 +1,10 @@
-import Game from "./classes/game.js";
-
-const state = require("./state.js");
-
-const game = new Game();
+import game from "./game.js";
 
 game.init();
 
+
+
+
 window.game = game;
 window.character = game.character;
-window.state = state;
+window.state = game.state;

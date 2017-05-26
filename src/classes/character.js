@@ -1,10 +1,11 @@
 import locations from "../stores/locations.js";
+import state from '../state.js';
 
-export default class Character {
+class Character {
     constructor(){
         window.console.log('creating character...');
 
-        this.state = (require("../state.js")).character;
+        this.state = state.character;
         this.location_store = locations;
     }
 
@@ -27,7 +28,7 @@ export default class Character {
     }
 
     getLocation(){
-        return this.location_store[this.state.location];
+        return this.location_store.getLocation(this.state.location);
     }
 
     goTo(location_key){
@@ -36,3 +37,5 @@ export default class Character {
         return this;
     }
 }
+
+export default (new Character);

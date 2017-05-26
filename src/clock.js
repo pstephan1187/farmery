@@ -1,24 +1,53 @@
-const Bus = require("./event-bus.js");
+import ReactDOM from 'react-dom';
+import React from 'react';
+import bus from "./event-bus.js";
+import state from './state.js';
 
 class Clock {
     constructor(){
-        this.state = (require("./state.js")).time;
+        this.state = state.time;
         this.paused = false;
+
+        this.toggle = this.toggle.bind(this);
+        this.pause = this.pause.bind(this);
+        this.play = this.play.bind(this);
     }
 
     init(){
         this.interval = setInterval(this.tick.bind(this), 10);
 
-        Bus.$on('time.toggle', function(){
-            this.paused = !this.paused;
-        }.bind(this));
+        // Bus.$on('time.toggle', function(){
+        //     this.paused = !this.paused;
+        // }.bind(this));
+    }
+
+    pause(){
+        this.paused = true;
+        bus.$emit('time.pause', this);
+
+        return this;
+    }
+
+    play(){
+        this.paused = false;
+        bus.$emit('time.play', this);
+
+        return this;
+    }
+
+    toggle(){
+        if(this.paused){
+            return this.play();
+        }
+
+        return this.pause();
     }
 
     tick(){
         if(this.paused){
             return;
         }
-        
+
         this.state.minute++;
 
         // increment hour
@@ -42,9 +71,15 @@ class Clock {
             this.state.season = 0;
         }
 
-        Bus.$emit('time', this);
+        ReactDOM.render(
+            <div>
+                { this.getFormattedDateTime() }
+                <button onClick={ this.toggle }>Toggle</button>
+            </div>,
+            document.getElementById('clock')
+        );
 
-        // console.log(this.getFormattedDate() + ' ' +this.getFormattedTime());
+        bus.$emit('time.tick', this);
     }
 
     getFormattedDate(){
@@ -97,4 +132,4 @@ class Clock {
     }
 }
 
-module.exports = (new Clock);
+export default (new Clock);

@@ -1,13 +1,14 @@
 import Abigail from "../classes/people/abigail.js";
+import state from '../state.js';
 
-const state = require("../../state.json");
+class People {
+    constructor(){
+        this.abigail = new Abigail(state.people.abigail);
+    }
 
-export default class People {
-	constructor(){
-		this.abigail = new Abigail(state.people.abigail);
-	}
-
-	init(){
-		this.abigail.init();
-	}
+    init(){
+        this.abigail.init();
+    }
 }
+
+export default (new People());

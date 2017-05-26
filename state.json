@@ -18,13 +18,5 @@
             "relationship": 0,
             "location": "farm"
         }
-    },
-    "locations": {
-        "market": {
-            "name": "Market"
-        },
-        "farm": {
-            "name": "Farm"
-        }
     }
 }

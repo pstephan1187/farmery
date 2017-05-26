@@ -27,7 +27,7 @@ export default class Person {
     }
 
     getLocation(){
-        return this.location_store[this.state.location];
+        return this.location_store.getLocation(this.state.location);
     }
 
     converse(character){}

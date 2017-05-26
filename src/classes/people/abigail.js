@@ -1,9 +1,10 @@
 import Person from "../person.js";
-const Bus = require("../../event-bus.js");
+import clock from "../../clock.js";
+import bus from "../../event-bus.js";
 
 export default class Abigail extends Person{
     defineMovements(){
-        Bus.$on('time', function(time){
+        bus.$on('time.tick', function(time){
             if(time.state.hour === 12 && time.state.minute === 2){
                 this.goTo('market');
             }
