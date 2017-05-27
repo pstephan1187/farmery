@@ -45,6 +45,7 @@ class Clock {
 
     tick(){
         if(this.paused){
+            this.render();
             return;
         }
 
@@ -71,13 +72,7 @@ class Clock {
             this.state.season = 0;
         }
 
-        ReactDOM.render(
-            <div>
-                { this.getFormattedDateTime() }
-                <button onClick={ this.toggle }>Toggle</button>
-            </div>,
-            document.getElementById('clock')
-        );
+        this.render();
 
         bus.$emit('time.tick', this);
     }
@@ -129,6 +124,18 @@ class Clock {
 
     getFormattedDateTime(){
         return this.getFormattedDate() + ' ' + this.getFormattedTime();
+    }
+
+    render(){
+        ReactDOM.render(
+            <div>
+                { this.getFormattedDateTime() }
+                <button onClick={ this.toggle }>
+                    { this.paused ? 'Play': 'Pause' }
+                </button>
+            </div>,
+            document.getElementById('clock')
+        );
     }
 }
 
