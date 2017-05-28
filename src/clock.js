@@ -1,11 +1,10 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 import bus from "./event-bus.js";
-import state from './state.js';
 
 class Clock {
-    constructor(){
-        this.state = state.time;
+    constructor(state){
+        this.state = state;
         this.paused = false;
 
         this.toggle = this.toggle.bind(this);
@@ -139,4 +138,4 @@ class Clock {
     }
 }
 
-export default (new Clock);
+export default Clock;

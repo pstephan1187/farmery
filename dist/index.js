@@ -3254,11 +3254,45 @@ module.exports = SyntheticUIEvent;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__state_json__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__state_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__state_json__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__clock_js__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__stores_locations_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stores_people_js__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__classes_character_js__ = __webpack_require__(89);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
-/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__state_json___default.a);
+
+
+
+
+var State = function () {
+	function State(data) {
+		_classCallCheck(this, State);
+
+		this.state = data;
+
+		this.clock = new __WEBPACK_IMPORTED_MODULE_0__clock_js__["a" /* default */](this.state.time);
+		this.location_store = new __WEBPACK_IMPORTED_MODULE_1__stores_locations_js__["a" /* default */]();
+		this.character = new __WEBPACK_IMPORTED_MODULE_3__classes_character_js__["a" /* default */](this.state.character);
+		this.people_store = new __WEBPACK_IMPORTED_MODULE_2__stores_people_js__["a" /* default */](this.state.people);
+	}
+
+	_createClass(State, [{
+		key: "init",
+		value: function init() {
+			this.clock.init();
+			this.location_store.init(this.people_store);
+			this.character.init(this.location_store);
+			this.people_store.init(this.location_store);
+		}
+	}]);
+
+	return State;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (State);
 
 /***/ }),
 /* 25 */
@@ -4632,37 +4666,45 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
 
-var Locations = function () {
-    function Locations() {
-        _classCallCheck(this, Locations);
+var LocationStore = function () {
+    function LocationStore() {
+        _classCallCheck(this, LocationStore);
 
-        this.state = {
-            locations: {
-                market: new __WEBPACK_IMPORTED_MODULE_2__classes_locations_market_js__["a" /* default */]({ name: 'Market' }),
-                farm: new __WEBPACK_IMPORTED_MODULE_3__classes_locations_farm_js__["a" /* default */]({ name: 'Farm' })
-            }
-        };
+        console.log('constructing location store');
+
+        this.locations = {};
     }
 
-    _createClass(Locations, [{
-        key: 'getLocation',
-        value: function getLocation(key) {
-            return this.state.locations[key];
+    _createClass(LocationStore, [{
+        key: 'init',
+        value: function init(people_store) {
+            this.locations.market = new __WEBPACK_IMPORTED_MODULE_2__classes_locations_market_js__["a" /* default */]({ id: 'market', name: 'Market' }, people_store);
+            this.locations.farm = new __WEBPACK_IMPORTED_MODULE_3__classes_locations_farm_js__["a" /* default */]({ id: 'farm', name: 'Farm' }, people_store);
         }
     }, {
-        key: 'init',
-        value: function init() {
-            this.state.locations.market.init();
-            this.state.locations.farm.init();
-
-            var keys = Object.keys(this.state.locations);
+        key: 'render',
+        value: function render() {
+            var keys = Object.keys(this.locations);
 
             var location_jsx = keys.map(function (key) {
-                var location = this.state.locations[key];
+                var location = this.locations[key];
+                var people_jsx = location.getPeople().map(function (person) {
+                    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'li',
+                        { key: person.getName() },
+                        person.getName()
+                    );
+                });
+
                 return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     { key: key },
-                    location.getName()
+                    location.getName(),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'ul',
+                        null,
+                        people_jsx
+                    )
                 );
             }.bind(this));
 
@@ -4681,12 +4723,17 @@ var Locations = function () {
                 )
             ), document.getElementById('locations'));
         }
+    }, {
+        key: 'getLocation',
+        value: function getLocation(key) {
+            return this.locations[key];
+        }
     }]);
 
-    return Locations;
+    return LocationStore;
 }();
 
-/* harmony default export */ __webpack_exports__["a"] = (new Locations());
+/* harmony default export */ __webpack_exports__["a"] = (LocationStore);
 
 /***/ }),
 /* 34 */
@@ -6735,23 +6782,24 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Location = function () {
-    function Location(state) {
+    function Location(state, people_store) {
         _classCallCheck(this, Location);
 
-        window.console.log('creating location...');
+        window.console.log('creating location: ' + state.name);
 
         this.state = state;
+        this.people_store = people_store;
     }
 
     _createClass(Location, [{
-        key: 'init',
-        value: function init() {
-            console.log('initializing location: ' + this.getName() + '...');
-        }
-    }, {
         key: 'getName',
         value: function getName() {
             return this.state.name;
+        }
+    }, {
+        key: 'getPeople',
+        value: function getPeople() {
+            return this.people_store.getPeopleAt(this.state.id);
         }
     }]);
 
@@ -6770,7 +6818,6 @@ var Location = function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__event_bus_js__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__state_js__ = __webpack_require__(24);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -6779,12 +6826,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
 
-
 var Clock = function () {
-    function Clock() {
+    function Clock(state) {
         _classCallCheck(this, Clock);
 
-        this.state = __WEBPACK_IMPORTED_MODULE_3__state_js__["a" /* default */].time;
+        this.state = state;
         this.paused = false;
 
         this.toggle = this.toggle.bind(this);
@@ -6932,7 +6978,7 @@ var Clock = function () {
     return Clock;
 }();
 
-/* harmony default export */ __webpack_exports__["a"] = (new Clock());
+/* harmony default export */ __webpack_exports__["a"] = (Clock);
 
 /***/ }),
 /* 54 */
@@ -9833,13 +9879,22 @@ module.exports = __webpack_require__(18);
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game_js__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__state_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__state_json__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__state_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__state_json__);
 
 
-__WEBPACK_IMPORTED_MODULE_0__game_js__["a" /* default */].init();
 
-window.game = __WEBPACK_IMPORTED_MODULE_0__game_js__["a" /* default */];
-window.character = __WEBPACK_IMPORTED_MODULE_0__game_js__["a" /* default */].character;
-window.state = __WEBPACK_IMPORTED_MODULE_0__game_js__["a" /* default */].state;
+
+var state = new __WEBPACK_IMPORTED_MODULE_1__state_js__["a" /* default */](__WEBPACK_IMPORTED_MODULE_2__state_json___default.a);
+var game = new __WEBPACK_IMPORTED_MODULE_0__game_js__["a" /* default */](state);
+
+game.init();
+game.render();
+
+window.game = game;
+window.character = game.character;
+window.state = game.state;
 
 /***/ }),
 /* 88 */
@@ -9852,28 +9907,24 @@ window.state = __WEBPACK_IMPORTED_MODULE_0__game_js__["a" /* default */].state;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__stores_locations_js__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__state_js__ = __webpack_require__(24);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-
-
-
 var Character = function () {
-    function Character() {
+    function Character(state) {
         _classCallCheck(this, Character);
 
         window.console.log('creating character...');
 
-        this.state = __WEBPACK_IMPORTED_MODULE_1__state_js__["a" /* default */].character;
-        this.location_store = __WEBPACK_IMPORTED_MODULE_0__stores_locations_js__["a" /* default */];
+        this.state = state;
     }
 
     _createClass(Character, [{
-        key: 'init',
-        value: function init() {
+        key: "init",
+        value: function init(location_store) {
+            this.location_store = location_store;
+
             if (!this.state.name) {
                 this.state.name = prompt("what is your name?");
             }
@@ -9881,24 +9932,24 @@ var Character = function () {
             return this;
         }
     }, {
-        key: 'talkTo',
+        key: "talkTo",
         value: function talkTo(person) {
             person.converse(this);
 
             return this;
         }
     }, {
-        key: 'getName',
+        key: "getName",
         value: function getName() {
             return this.state.name;
         }
     }, {
-        key: 'getLocation',
+        key: "getLocation",
         value: function getLocation() {
             return this.location_store.getLocation(this.state.location);
         }
     }, {
-        key: 'goTo',
+        key: "goTo",
         value: function goTo(location_key) {
             this.state.location = location_key;
 
@@ -9909,7 +9960,7 @@ var Character = function () {
     return Character;
 }();
 
-/* harmony default export */ __webpack_exports__["a"] = (new Character());
+/* harmony default export */ __webpack_exports__["a"] = (Character);
 
 /***/ }),
 /* 90 */
@@ -10049,21 +10100,18 @@ var Abigail = function (_Person) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__stores_locations_js__ = __webpack_require__(33);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-
-
 var Person = function () {
-    function Person(state) {
+    function Person(state, location_store) {
         _classCallCheck(this, Person);
 
-        window.console.log('creating person...');
+        window.console.log('creating person: ' + state.name + '...');
 
         this.state = state;
-        this.location_store = __WEBPACK_IMPORTED_MODULE_0__stores_locations_js__["a" /* default */];
+        this.location_store = location_store;
     }
 
     _createClass(Person, [{
@@ -10107,48 +10155,36 @@ var Person = function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__state_js__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__clock_js__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__classes_character_js__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stores_locations_js__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__stores_people_js__ = __webpack_require__(95);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-
-
-
-
-
-
 var Game = function () {
-    function Game() {
+    function Game(state) {
         _classCallCheck(this, Game);
 
         console.log('creating game...');
-        this.state = __WEBPACK_IMPORTED_MODULE_0__state_js__["a" /* default */];
-        this.clock = __WEBPACK_IMPORTED_MODULE_1__clock_js__["a" /* default */];
-        this.locations = __WEBPACK_IMPORTED_MODULE_3__stores_locations_js__["a" /* default */];
-        this.character = __WEBPACK_IMPORTED_MODULE_2__classes_character_js__["a" /* default */];
-        this.people = __WEBPACK_IMPORTED_MODULE_4__stores_people_js__["a" /* default */];
+        this.state = state;
     }
 
     _createClass(Game, [{
         key: 'init',
         value: function init() {
             console.log('initializing game: ', this.state);
-            this.clock.init();
-            this.locations.init();
-            this.character.init();
-            this.people.init();
+
+            this.state.init();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            this.state.location_store.render();
         }
     }]);
 
     return Game;
 }();
 
-/* harmony default export */ __webpack_exports__["a"] = (new Game());
+/* harmony default export */ __webpack_exports__["a"] = (Game);
 
 /***/ }),
 /* 95 */
@@ -10156,32 +10192,61 @@ var Game = function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_people_abigail_js__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__state_js__ = __webpack_require__(24);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
 
-
 var People = function () {
-    function People() {
+    function People(people) {
         _classCallCheck(this, People);
 
-        this.abigail = new __WEBPACK_IMPORTED_MODULE_0__classes_people_abigail_js__["a" /* default */](__WEBPACK_IMPORTED_MODULE_1__state_js__["a" /* default */].people.abigail);
+        this.state = people;
+
+        this.people = {};
     }
 
     _createClass(People, [{
         key: "init",
-        value: function init() {
-            this.abigail.init();
+        value: function init(location_store) {
+            this.people.abigail = new __WEBPACK_IMPORTED_MODULE_0__classes_people_abigail_js__["a" /* default */](this.state.abigail, location_store);
+
+            this._iterate(function (person) {
+                person.init();
+            });
+        }
+    }, {
+        key: "getPerson",
+        value: function getPerson(key) {
+            return this.people[key];
+        }
+    }, {
+        key: "getPeopleAt",
+        value: function getPeopleAt(location_key) {
+            var people = [];
+
+            this._iterate(function (person) {
+                if (location_key === person.state.location) {
+                    people.push(person);
+                }
+            });
+
+            return people;
+        }
+    }, {
+        key: "_iterate",
+        value: function _iterate(callback) {
+            for (var i in this.people) {
+                callback(this.people[i], i);
+            }
         }
     }]);
 
     return People;
 }();
 
-/* harmony default export */ __webpack_exports__["a"] = (new People());
+/* harmony default export */ __webpack_exports__["a"] = (People);
 
 /***/ }),
 /* 96 */

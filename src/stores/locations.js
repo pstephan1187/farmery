@@ -3,29 +3,31 @@ import React from 'react';
 import Market from "../classes/locations/market.js";
 import Farm from "../classes/locations/farm.js";
 
-class Locations {
+class LocationStore {
     constructor(){
-        this.state = {
-            locations: {
-                market: new Market({name: 'Market'}),
-                farm: new Farm({name: 'Farm'})
-            }
-        };
+    	console.log('constructing location store');
+
+    	this.locations = {};
     }
 
-    getLocation(key){
-        return this.state.locations[key];
+    init(people_store){
+    	this.locations.market = new Market({id: 'market', name: 'Market'}, people_store);
+    	this.locations.farm = new Farm({id:'farm', name: 'Farm'}, people_store);
     }
 
-    init(){
-        this.state.locations.market.init();
-        this.state.locations.farm.init();
-
-        const keys = Object.keys(this.state.locations);
+    render(){
+        const keys = Object.keys(this.locations);
 
         const location_jsx = keys.map(function(key){
-            const location = this.state.locations[key];
-            return <div key={key}>{ location.getName() }</div>;
+            const location = this.locations[key];
+            const people_jsx = location.getPeople().map(function(person){
+                return <li key={ person.getName() }>{ person.getName() }</li>;
+            });
+
+            return <div key={key}>
+                { location.getName() }
+                <ul>{ people_jsx }</ul>
+            </div>;
         }.bind(this));
 
         ReactDOM.render(
@@ -36,6 +38,10 @@ class Locations {
             document.getElementById('locations')
         );
     }
+
+    getLocation(key){
+        return this.locations[key];
+    }
 }
 
-export default (new Locations());
+export default LocationStore;

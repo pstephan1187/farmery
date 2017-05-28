@@ -1,11 +1,9 @@
-import locations from "../stores/locations.js";
-
 export default class Person {
-    constructor(state){
-        window.console.log('creating person...');
+    constructor(state, location_store){
+        window.console.log('creating person: ' + state.name + '...');
 
         this.state = state;
-        this.location_store = locations;
+        this.location_store = location_store;
     }
 
     init(){

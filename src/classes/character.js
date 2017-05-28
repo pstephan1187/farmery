@@ -1,15 +1,13 @@
-import locations from "../stores/locations.js";
-import state from '../state.js';
-
 class Character {
-    constructor(){
+    constructor(state){
         window.console.log('creating character...');
 
-        this.state = state.character;
-        this.location_store = locations;
+        this.state = state;
     }
 
-    init(){
+    init(location_store){
+        this.location_store = location_store;
+
         if(!this.state.name){
             this.state.name = prompt("what is your name?");
         }
@@ -38,4 +36,4 @@ class Character {
     }
 }
 
-export default (new Character);
+export default Character;
