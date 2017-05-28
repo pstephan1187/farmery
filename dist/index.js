@@ -4657,9 +4657,11 @@ module.exports = canDefineProperty;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__classes_locations_market_js__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__classes_locations_farm_js__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__event_bus_js__ = __webpack_require__(54);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 
 
 
@@ -4684,6 +4686,10 @@ var LocationStore = function () {
     }, {
         key: 'render',
         value: function render() {
+            __WEBPACK_IMPORTED_MODULE_4__event_bus_js__["a" /* default */].$on('person.change-location', function () {
+                this.render();
+            }.bind(this));
+
             var keys = Object.keys(this.locations);
 
             var location_jsx = keys.map(function (key) {
@@ -10055,6 +10061,12 @@ var Abigail = function (_Person) {
                     this.goTo('market');
                 }
             }.bind(this));
+
+            __WEBPACK_IMPORTED_MODULE_2__event_bus_js__["a" /* default */].$on('time.tick', function (time) {
+                if (time.state.hour === 16 && time.state.minute === 35) {
+                    this.goTo('farm');
+                }
+            }.bind(this));
         }
     }, {
         key: "converse",
@@ -10100,9 +10112,12 @@ var Abigail = function (_Person) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus_js__ = __webpack_require__(54);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
 
 var Person = function () {
     function Person(state, location_store) {
@@ -10132,6 +10147,8 @@ var Person = function () {
         value: function goTo(location_key) {
             this.state.location = location_key;
             console.log(this.getName() + ' is going to ' + this.getLocation().getName());
+
+            __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* default */].$emit('person.change-location', [this, this.getLocation()]);
 
             return this;
         }

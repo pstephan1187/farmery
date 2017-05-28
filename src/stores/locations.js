@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import Market from "../classes/locations/market.js";
 import Farm from "../classes/locations/farm.js";
+import bus from "../event-bus.js";
 
 class LocationStore {
     constructor(){
@@ -16,6 +17,10 @@ class LocationStore {
     }
 
     render(){
+        bus.$on('person.change-location', function(){
+            this.render();
+        }.bind(this));
+
         const keys = Object.keys(this.locations);
 
         const location_jsx = keys.map(function(key){

@@ -1,3 +1,5 @@
+import bus from "../event-bus.js";
+
 export default class Person {
     constructor(state, location_store){
         window.console.log('creating person: ' + state.name + '...');
@@ -20,6 +22,8 @@ export default class Person {
     goTo(location_key){
         this.state.location = location_key;
         console.log(this.getName() + ' is going to ' + this.getLocation().getName());
+
+        bus.$emit('person.change-location', [this, this.getLocation()]);
 
         return this;
     }

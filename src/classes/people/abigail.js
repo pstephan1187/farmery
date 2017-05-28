@@ -9,6 +9,12 @@ export default class Abigail extends Person{
                 this.goTo('market');
             }
         }.bind(this));
+
+        bus.$on('time.tick', function(time){
+            if(time.state.hour === 16 && time.state.minute === 35){
+                this.goTo('farm');
+            }
+        }.bind(this));
     }
 
     converse(character){
