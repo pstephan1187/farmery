@@ -1,10 +1,12 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import bus from "./event-bus.js";
+// import bus from "./event-bus.js";
 
 class Clock {
     constructor(state){
         this.state = state;
+        this.total_elapsed = 0;
+
         this.paused = false;
 
         this.toggle = this.toggle.bind(this);
@@ -12,13 +14,18 @@ class Clock {
         this.play = this.play.bind(this);
     }
 
-    init(){
-        this.interval = setInterval(this.tick.bind(this), 10);
-
-        // Bus.$on('time.toggle', function(){
-        //     this.paused = !this.paused;
-        // }.bind(this));
+    loop(elapsed){
+        this.tick(elapsed);
+        console.log(this.total_elapsed, Math.round(1000 / elapsed) + ' FPS');
     }
+
+    // init(){
+    //     this.interval = setInterval(this.tick.bind(this), 10);
+
+    //     // Bus.$on('time.toggle', function(){
+    //     //     this.paused = !this.paused;
+    //     // }.bind(this));
+    // }
 
     pause(){
         this.paused = true;
@@ -42,13 +49,20 @@ class Clock {
         return this.pause();
     }
 
-    tick(){
+    tick(elapsed){
         if(this.paused){
             this.render();
             return;
         }
 
-        this.state.minute++;
+        this.total_elapsed += elapsed;
+        
+        if(this.total_elapsed < 1000){
+            return;
+        }
+
+        this.total_elapsed -= 1000;
+        this.state.increment('time.minute');
 
         // increment hour
         if(this.state.minute >= 60){
@@ -73,13 +87,13 @@ class Clock {
 
         this.render();
 
-        bus.$emit('time.tick', this);
+        // bus.$emit('time.tick', this);
     }
 
     getFormattedDate(){
         var season;
 
-        switch(this.state.season){
+        switch(this.state.get('time.season')){
             case 0:
                 season = 'Spring';
                 break;
@@ -94,15 +108,15 @@ class Clock {
                 break;
         }
 
-        return season + ' ' + this.state.day + ' Year ' + this.state.year;
+        return season + ' ' + this.state.get('time.day') + ' Year ' + this.state.get('time.year');
     }
 
     getFormattedTime(){
-        var hour = this.state.hour;
+        var hour = this.state.get('time.hour');
 
         var meridiem = 'AM';
 
-        var minute = "" + this.state.minute + "";;
+        var minute = "" + this.state.get('time.minute') + "";;
         var pad = "00";
         var minute = pad.substring(0, pad.length - minute.length) + minute;
 
