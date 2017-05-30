@@ -3,18 +3,18 @@ class Bus {
         this.events = {};
     }
 
-    $emit(event, args){
+    emit(event, args){
         if(!this.events[event]){
             return;
         }
 
         for(var i in this.events[event]){
             const callback = this.events[event][i];
-            callback(args);
+            callback(...args);
         }
     }
 
-    $on(event, callback){
+    on(event, callback){
         if(!this.events[event]){
             this.events[event] = [];
         }
@@ -23,6 +23,4 @@ class Bus {
     }
 }
 
-const bus = new Bus();
-
-export default (new Bus());
+export default Bus;

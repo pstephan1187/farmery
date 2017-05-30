@@ -2,6 +2,7 @@
 
 import Loop from './loop.js';
 import State from './state.js';
+import Bus from './event-bus.js';
 
 class Game {
 	// create a new game object, initialize the loop,
@@ -11,12 +12,12 @@ class Game {
         this.loop = new Loop();
         this.state = {};
         this.bindings = {};
+        this.bus = new Bus();
 
         this.loop.onUpdate(function(elapsed){
-        	for(var i in this.bindings){
-        		const binding = this.bindings[i];
-        		binding.loop(elapsed);
-        	}
+            this._iterate(function(binding){
+                binding.loop(elapsed);
+            });
         }.bind(this));
     }
 
@@ -27,15 +28,22 @@ class Game {
 
     // register bindings to the game
     register(key, class_name){
-		this.bindings[key] = new class_name(this.state);
+		this.bindings[key] = new class_name(this.state, this.bus);
     }
 
     // start the loop
     start(){
-    	this.loop.start();
-    //     console.log('initializing game: ', this.state);
+        this._iterate(function(binding){
+            binding.init();
+        });
 
-    //     this.state.init();
+    	this.loop.start();
+    }
+
+    _iterate(callback){
+        for(var i in this.bindings){
+            callback(this.bindings[i]);
+        }
     }
 
     // render(){

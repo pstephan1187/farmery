@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-// import bus from "./event-bus.js";
 
 class Clock {
-    constructor(state){
+    constructor(state, bus){
         this.state = state;
+        this.bus = bus;
         this.total_elapsed = 0;
 
         this.paused = false;
@@ -19,24 +19,22 @@ class Clock {
         console.log(this.total_elapsed, Math.round(1000 / elapsed) + ' FPS');
     }
 
-    // init(){
-    //     this.interval = setInterval(this.tick.bind(this), 10);
-
-    //     // Bus.$on('time.toggle', function(){
-    //     //     this.paused = !this.paused;
-    //     // }.bind(this));
-    // }
+    init(){
+        this.bus.on('time.toggle', function(){
+            this.paused = !this.paused;
+        }.bind(this));
+    }
 
     pause(){
         this.paused = true;
-        bus.$emit('time.pause', this);
+        this.bus.emit('time.pause', this);
 
         return this;
     }
 
     play(){
         this.paused = false;
-        bus.$emit('time.play', this);
+        this.bus.emit('time.play', this);
 
         return this;
     }
@@ -56,7 +54,7 @@ class Clock {
         }
 
         this.total_elapsed += elapsed;
-        
+
         if(this.total_elapsed < 1000){
             return;
         }
@@ -65,29 +63,29 @@ class Clock {
         this.state.increment('time.minute');
 
         // increment hour
-        if(this.state.minute >= 60){
-            this.state.hour++;
-            this.state.minute = 0;
+        if(this.state.get('time.minute') >= 60){
+            this.state.increment('time.hour');
+            this.state.set('time.minute', 0);
         }
 
-        if(this.state.hour >=24){
-            this.state.day++;
-            this.state.hour = 0;
+        if(this.state.get('time.hour') >=24){
+            this.state.increment('time.day');
+            this.state.set('time.hour', 0);
         }
 
-        if(this.state.day >= 31){
-            this.state.season++;
-            this.state.day = 1;
+        if(this.state.get('time.day') >= 31){
+            this.state.increment('time.season');
+            this.state.set('time.day', 1);
         }
 
-        if(this.state.season >= 4){
-            this.state.year++;
-            this.state.season = 0;
+        if(this.state.get('time.season') >= 4){
+            this.state.increment('time.year');
+            this.state.set('time.season', 0);
         }
 
         this.render();
 
-        // bus.$emit('time.tick', this);
+        // this.bus.emit('time.tick', this);
     }
 
     getFormattedDate(){
