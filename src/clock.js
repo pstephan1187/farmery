@@ -48,8 +48,9 @@ class Clock {
     }
 
     tick(elapsed){
+        this.render();
+        
         if(this.paused){
-            this.render();
             return;
         }
 
@@ -83,9 +84,9 @@ class Clock {
             this.state.set('time.season', 0);
         }
 
-        this.render();
+        // this.render();
 
-        // this.bus.emit('time.tick', this);
+        this.bus.emit('time.tick', this);
     }
 
     getFormattedDate(){
